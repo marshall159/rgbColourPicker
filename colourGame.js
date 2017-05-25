@@ -1,46 +1,58 @@
 
 
-
-function generateValues() {
-	var arr = [];
+//Generate single three digit number value
+function generateValue() {
+	var rgbArray = [];
 	for (var i = 0; i <= 2; i++) {
-		var random = Math.round(Math.random() * 255);
-		arr.push(random)
+		var randomNumber = Math.round(Math.random() * 255);
+		rgbArray.push(randomNumber)
 	}
-	return arr.join(', ');	
+	return rgbArray;	
 }
 
-function generateRGB(values) {
-	return `rgb(${values})`;
+//Convert number value to RGB string 
+function generateRgbValue(arr) {
+	var rgbString = arr.join(', ');
+	return `rgb(${rgbString})`;
+}
+
+function changeSquaresColours() {
+	for (var i = 0; i < squares.length; i++) {
+		squares[i].style.background = generateRgbValue(generateValue());
+	}
 }
 
 
-//Generate random RGB code 
-var guess = generateValues();
-var guessCode = generateRGB(guess);
-// Set random RGB code as background on first div
-var heading = document.getElementsByClassName('bg-1')[0];
-heading.style.background = guessCode;
-
-var headingRgbCode = document.getElementById('rgb');
-headingRgbCode.textContent = `(${guess})`;
-
-// Select a random number from 0 - 3
-var squareId = Math.floor(Math.random() * 3);
-// Use this number to select corresponding square div
 var squares = document.getElementsByClassName('square');
 
-function changeColours() {
-	for (var i = 0; i < squares.length; i++) {
-		squares[i].style.background = generateRGB(generateValues());
+changeSquaresColours();
+
+var allSquaresDiv = document.getElementById('allSquaresDiv');
+
+function whichSquareClicked(event) {
+	var value = event.target.style.background;
+	if (value == chosenSquare.style.background) {
+		resultOfGuess.textContent = 'You guessed right';
+		headingBackground.style.background = chosenSquare.style.background;
+	}
+	else {
+		resultOfGuess.textContent = 'Guess again';
+		event.target.style.display = 'none';
 	}
 }
 
-changeColours();
+allSquaresDiv.addEventListener('click', function(event) {
+	whichSquareClicked(event);
+});
 
-// Set the same RGB code on this square div as original background
-var chosenSquare = squares[squareId];
-chosenSquare.id = squareId;
-chosenSquare.style.background = guessCode;
+var chosenSquare = squares[Math.floor(Math.random() * 3)];
+
+// Update heading to show which RGB colour to pick
+var headingRgbCode = document.getElementById('headingRgbCode');
+headingRgbCode.textContent = `${chosenSquare.style.background}`;
+
+var resultOfGuess = document.getElementById('resultOfGuess');
+
+var headingBackground = document.querySelector('.bg-1');
 
 
