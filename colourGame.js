@@ -29,17 +29,28 @@ changeSquaresColours();
 
 var allSquaresDiv = document.getElementById('allSquaresDiv');
 
+function squaresAppear() {
+	for (var i = 0; i < squares.length; i++) {
+		squares[i].classList.remove('hidden');
+		squares[i].style.background = chosenSquare.style.background;
+	}	
+}
+
 function whichSquareClicked(event) {
 	var value = event.target.style.background;
 	if (value == chosenSquare.style.background) {
 		resultOfGuess.textContent = 'You guessed right';
 		headingBackground.style.background = chosenSquare.style.background;
+		squaresAppear();
+		
 	}
 	else {
 		resultOfGuess.textContent = 'Guess again';
-		event.target.style.display = 'none';
+		event.target.classList.add('hidden');
 	}
 }
+
+
 
 allSquaresDiv.addEventListener('click', function(event) {
 	whichSquareClicked(event);
